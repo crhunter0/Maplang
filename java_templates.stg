@@ -1,0 +1,69 @@
+class(name, vars, stats) ::= <<
+public class <name> {
+	public <name> {
+	}
+	
+	<vars:type(); separator="\n">
+	
+	<vars:setter(); separator="\n">
+	<vars:getter(); separator="\n">
+	
+	public void doLogic() {
+		<stats:{stat | <stat>}; separator="\n">
+	}
+	<!doLogic(<stats>)!>
+}
+>>
+
+type(x) ::= "<x.type> <x.name>;"
+
+setter(x) ::= <<
+public void set<x.name>(<x.type> setField) {
+			<x.name> = setField;
+		}
+>>
+
+getter(x) ::= <<
+public <x.type> get<x.name>() {
+			return <x.name>;
+		}
+>>
+
+doLogic(stats) ::= <<
+	<stats>
+>>
+
+move(left, right) ::= "<left> = <right>;"
+
+concats(in, as) ::= <<	
+<in:{ x | <as>.concat(<x>);}; separator="\n">
+>>
+
+ifCondition(conds, block) ::= <<
+	if (<conds:{cond | <cond>}>) {
+		<block:{line | <line>}; separator="\n">
+	}
+>>
+
+statement(stat) ::= <<
+	<stat; separator="\n">
+>>
+
+
+condition(left, op, right) ::= "<left> <javaOpMap.(op)> <right>"
+
+andOrCondition(condOp) ::= " <javaCondOpMap.(condOp)> "
+
+javaOpMap ::= [
+	"=":"==",
+	"<>":"!=",
+	default : key
+]
+
+javaCondOpMap ::= [
+	"AND":"&&",
+	"OR":"||"
+]
+
+
+
